@@ -213,4 +213,13 @@ export default class Apicall {
       console.log('create product Review error', error.response)
     }
   }
+
+  async getTopProducts() {
+    try {
+      const res = await this.AxiosInstance1().get(`/products/top`)
+      return res
+    } catch (error) {
+      console.log('get top product error', error.response)
+    }
+  }
 }

@@ -169,3 +169,14 @@ export const createProductReview = async (req, res) => {
     return util.failureResponse(res, 500, 'internal server error')
   }
 }
+export const getProductsTop = async (req, res) => {
+  try {
+    const topProduct = await Product.find().sort({ rating: -1 }).limit(3)
+    if (!topProduct) return util.failureResponse(res, 404, 'no product found')
+    return util.successResponse(res, 200, topProduct)
+  } catch (error) {
+    console.log(error)
+
+    return util.failureResponse(res, 500, 'internal server error')
+  }
+}

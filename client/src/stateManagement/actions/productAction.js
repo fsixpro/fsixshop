@@ -21,6 +21,9 @@ import {
   CREATE_PRODUCT_REVIEW_REQUEST,
   CREATE_PRODUCT_REVIEW_SUCCESS,
   CREATE_PRODUCT_REVIEW_FAIL,
+  GET_TOP_PRODUCT_REQUEST,
+  GET_TOP_PRODUCT_SUCCESS,
+  GET_TOP_PRODUCT_FAIL,
 } from '../types/productTypes'
 const api = new Apicall()
 export const getProducts = (keyword, pageNumber) => async dispatch => {
@@ -151,6 +154,26 @@ export const createProductReview = (id, data) => async dispatch => {
       dispatch({
         type: CREATE_PRODUCT_REVIEW_FAIL,
         payload: msg,
+      })
+    }
+  } catch (error) {}
+}
+
+export const getTopProduct = () => async dispatch => {
+  try {
+    dispatch({ type: GET_TOP_PRODUCT_REQUEST })
+    const res = await api.getTopProducts()
+    if (res.status === 200) {
+      const {
+        data: { data },
+      } = res
+      dispatch({
+        type: GET_TOP_PRODUCT_SUCCESS,
+        payload: data,
+      })
+    } else {
+      dispatch({
+        type: GET_TOP_PRODUCT_FAIL,
       })
     }
   } catch (error) {}

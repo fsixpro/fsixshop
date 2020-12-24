@@ -20,6 +20,9 @@ import {
   CREATE_PRODUCT_REVIEW_REQUEST,
   CREATE_PRODUCT_REVIEW_SUCCESS,
   CREATE_PRODUCT_REVIEW_FAIL,
+  GET_TOP_PRODUCT_REQUEST,
+  GET_TOP_PRODUCT_SUCCESS,
+  GET_TOP_PRODUCT_FAIL,
 } from '../types/productTypes'
 
 const initialState = {
@@ -60,6 +63,24 @@ export const productListAdminReducer = (state = initialState, action) => {
       return state
   }
 }
+
+export const productTopReducer = (state = initialState, action) => {
+  const { type, payload } = action
+  switch (type) {
+    case GET_TOP_PRODUCT_REQUEST:
+      return { loading: true, products: [] }
+    case GET_TOP_PRODUCT_SUCCESS:
+      return {
+        loading: false,
+        products: payload,
+      }
+    case GET_TOP_PRODUCT_FAIL:
+      return { loading: false, error: payload }
+    default:
+      return state
+  }
+}
+
 export const productDetailsReducer = (
   state = { product: { reviews: [] }, loading: true },
   action

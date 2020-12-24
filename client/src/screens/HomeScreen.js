@@ -4,9 +4,10 @@ import { Col, Row } from 'react-bootstrap'
 import Product from '../components/Product'
 import { useSelector, useDispatch } from 'react-redux'
 import Loader from '../components/Loader'
-//import Message from '../components/Message'
+import Message from '../components/Message'
 import { getProducts } from '../stateManagement/actions/productAction'
 import Paginate from '../components/Paginate'
+import ProductCarousel from '../components/ProductCarousel'
 const HomeScreen = ({ match, history }) => {
   const keyword = match.params.keyword
   const pageNumber = Number(match.params.pageNumber || 1)
@@ -20,9 +21,13 @@ const HomeScreen = ({ match, history }) => {
 
   return (
     <>
+      {!keyword && <ProductCarousel />}
+
       <h1>Popular Product</h1>
       {loading ? (
         <Loader />
+      ) : products.length === 0 ? (
+        <Message>No product found</Message>
       ) : (
         <>
           {products.map(product => (
