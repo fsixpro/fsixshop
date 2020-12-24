@@ -17,6 +17,9 @@ import {
   PRODUCT_LIST_ADMIN_REQUEST,
   PRODUCT_LIST_ADMIN_SUCCESS,
   PRODUCT_LIST_ADMIN_FAIL,
+  CREATE_PRODUCT_REVIEW_REQUEST,
+  CREATE_PRODUCT_REVIEW_SUCCESS,
+  CREATE_PRODUCT_REVIEW_FAIL,
 } from '../types/productTypes'
 
 const initialState = {
@@ -58,7 +61,7 @@ export const productListAdminReducer = (state = initialState, action) => {
   }
 }
 export const productDetailsReducer = (
-  state = { product: {}, loading: true },
+  state = { product: { reviews: [] }, loading: true },
   action
 ) => {
   switch (action.type) {
@@ -102,6 +105,21 @@ export const updateProductReducer = (state = { product: {} }, action) => {
       return { loading: false, error: payload }
     case UPDATE_PRODUCT_RESET:
       return { product: {} }
+    default:
+      return state
+  }
+}
+
+export const CreateProductReviewReducer = (state = { product: {} }, action) => {
+  const { type, payload } = action
+  switch (type) {
+    case CREATE_PRODUCT_REVIEW_REQUEST:
+      return { loading: true }
+    case CREATE_PRODUCT_REVIEW_SUCCESS:
+      return { loading: false, success: true }
+    case CREATE_PRODUCT_REVIEW_FAIL:
+      return { loading: false, error: payload }
+
     default:
       return state
   }

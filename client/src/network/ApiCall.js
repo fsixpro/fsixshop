@@ -201,4 +201,16 @@ export default class Apicall {
       console.log('delete product error', error.response)
     }
   }
+
+  async createProductReview(id, data) {
+    try {
+      const res = await this.AxiosInstance1().post(
+        `/products/${id}/review`,
+        data
+      )
+      return res
+    } catch (error) {
+      console.log('create product Review error', error.response)
+    }
+  }
 }

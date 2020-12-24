@@ -146,6 +146,8 @@ export const createProductReview = async (req, res) => {
     const reviewed = product.reviews.find(
       review => review.user.toString() === req.user.toString()
     )
+    if (reviewed)
+      return util.failureResponse(res, 400, 'product already reviewed')
     const review = {
       name: user.name,
       rating,
@@ -154,7 +156,13 @@ export const createProductReview = async (req, res) => {
     }
     product.reviews.push(review)
     product.numReviews = product.reviews.length
-    // product.rating = product.reviews.reduce((acc, cur)=> )
+    product.rating =
+      product.reviews.reduce((acc, cur) => cur.rating + acc, 0) /
+      product.reviews.length
+    await product.save()
+    return util.successResponse(res, 201, {
+      msg: 'review added',
+    })
   } catch (error) {
     console.log(error)
 

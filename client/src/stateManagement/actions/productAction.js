@@ -18,6 +18,9 @@ import {
   PRODUCT_LIST_ADMIN_REQUEST,
   PRODUCT_LIST_ADMIN_SUCCESS,
   PRODUCT_LIST_ADMIN_FAIL,
+  CREATE_PRODUCT_REVIEW_REQUEST,
+  CREATE_PRODUCT_REVIEW_SUCCESS,
+  CREATE_PRODUCT_REVIEW_FAIL,
 } from '../types/productTypes'
 const api = new Apicall()
 export const getProducts = (keyword, pageNumber) => async dispatch => {
@@ -122,6 +125,31 @@ export const updateProduct = (id, data) => async dispatch => {
     } else {
       dispatch({
         type: UPDATE_PRODUCT_FAIL,
+        payload: msg,
+      })
+    }
+  } catch (error) {}
+}
+
+export const createProductReview = (id, data) => async dispatch => {
+  try {
+    dispatch({
+      type: CREATE_PRODUCT_REVIEW_REQUEST,
+    })
+    const res = await api.createProductReview(id, data)
+    const {
+      data: {
+        msg,
+        data: { msg: msgserver },
+      },
+    } = res
+    if (res.status === 201) {
+      dispatch({
+        type: CREATE_PRODUCT_REVIEW_SUCCESS,
+      })
+    } else {
+      dispatch({
+        type: CREATE_PRODUCT_REVIEW_FAIL,
         payload: msg,
       })
     }
