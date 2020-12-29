@@ -39,7 +39,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const PORT = process.env.PORT
-app.listen(5000, () =>
+app.listen(PORT, () =>
   console.log(
     `server running in ${process.env.NODE_ENV} mode on port ${PORT}`.blue
       .underline
