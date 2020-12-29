@@ -3,7 +3,7 @@ import User from '../models/UserModel.js'
 import Utility from '../utils/Utility.js'
 const util = new Utility()
 export const getProducts = async (req, res) => {
-  const pageSize = 2
+  const pageSize = 5
   const pageNumber = Number(req.query.pageNumber) || 1
   try {
     const keyword = req.query.keyword
