@@ -22,7 +22,7 @@ app.use(express.json())
 app.use('/api/products', productRoute)
 app.use('/api/user', userRoute)
 app.use('/api/order', orderRoute)
-app.use('/api/uploads', uploadRoute)
+app.use('/api/upload', uploadRoute)
 const __dirname = path.resolve()
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 

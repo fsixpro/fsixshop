@@ -23,6 +23,13 @@ import {
   GET_TOP_PRODUCT_REQUEST,
   GET_TOP_PRODUCT_SUCCESS,
   GET_TOP_PRODUCT_FAIL,
+  PRODUCT_IMAGE_UPLOAD_REQUEST,
+  PRODUCT_IMAGE_UPLOAD_SUCCESS,
+  PRODUCT_IMAGE_UPLOAD_FAIL,
+  PRODUCT_CREATE_RESET,
+  PRODUCT_CREATE_FAIL,
+  PRODUCT_CREATE_SUCCESS,
+  PRODUCT_CREATE_REQUEST,
 } from '../types/productTypes'
 
 const initialState = {
@@ -141,6 +148,36 @@ export const CreateProductReviewReducer = (state = { product: {} }, action) => {
     case CREATE_PRODUCT_REVIEW_FAIL:
       return { loading: false, error: payload }
 
+    default:
+      return state
+  }
+}
+
+export const productImageUploadReducer = (state = { image: '' }, action) => {
+  const { type, payload } = action
+  switch (type) {
+    case PRODUCT_IMAGE_UPLOAD_REQUEST:
+      return { loading: true }
+    case PRODUCT_IMAGE_UPLOAD_SUCCESS:
+      return { loading: false, success: true, image: payload }
+    case PRODUCT_IMAGE_UPLOAD_FAIL:
+      return { loading: false, error: payload }
+
+    default:
+      return state
+  }
+}
+
+export const productCreateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_CREATE_REQUEST:
+      return { loading: true }
+    case PRODUCT_CREATE_SUCCESS:
+      return { loading: false, success: true, product: action.payload }
+    case PRODUCT_CREATE_FAIL:
+      return { loading: false, error: action.payload }
+    case PRODUCT_CREATE_RESET:
+      return {}
     default:
       return state
   }

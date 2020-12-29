@@ -158,6 +158,7 @@ const PaymentScreen = ({ match, history }) => {
                       email={user && user.email}
                       onSuccess={onSuccessPayHandler}
                       className='btn btn-primary'
+                      channels={['card']}
                     />
                   </>
                 )}

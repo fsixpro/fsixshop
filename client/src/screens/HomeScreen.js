@@ -17,7 +17,6 @@ const HomeScreen = ({ match, history }) => {
   }, [dispatch, keyword, pageNumber])
   const productList = useSelector(state => state.productList)
   const { loading, products, pages, currentPageNumber } = productList
-  console.log(pages, pageNumber)
 
   return (
     <>

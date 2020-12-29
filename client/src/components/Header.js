@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Nav, Navbar, Container, NavDropdown } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { logout } from '../stateManagement/actions/userAction'
 import SearchBox from './SearchBox'
 
 const Header = () => {
+  const history = useHistory()
   const dispatch = useDispatch()
   const { cartItems } = useSelector(state => state.cart)
   const { userInfo } = useSelector(state => state.userLogin)
@@ -13,6 +15,11 @@ const Header = () => {
   const logoutHandler = () => {
     dispatch(logout())
   }
+  useEffect(() => {
+    if (!userInfo) {
+      history.push('/')
+    }
+  }, [])
   return (
     <header>
       <Navbar bg='primary' variant='dark' expand='lg' collapseOnSelect>

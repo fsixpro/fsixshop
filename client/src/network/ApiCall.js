@@ -193,14 +193,14 @@ export default class Apicall {
     }
   }
 
-  async upload(data) {
-    try {
-      const res = await this.AxiosInstanceImageUpload().post('/uploads', data)
-      return res
-    } catch (error) {
-      console.log('delete product error', error.response)
-    }
-  }
+  // async upload(data) {
+  //   try {
+  //     const res = await this.AxiosInstanceImageUpload().post('/uploads', data)
+  //     return res
+  //   } catch (error) {
+  //     console.log('delete product error', error.response)
+  //   }
+  // }
 
   async createProductReview(id, data) {
     try {
@@ -216,10 +216,27 @@ export default class Apicall {
 
   async getTopProducts() {
     try {
-      const res = await this.AxiosInstance1().get(`/products/top`)
+      const res = await this.AxiosInstance().get(`/products/top`)
       return res
     } catch (error) {
       console.log('get top product error', error.response)
+    }
+  }
+
+  async uploadProductImage(imageURI) {
+    try {
+      const res = await this.AxiosInstance1().post(`/upload`, { imageURI })
+      return res
+    } catch (error) {
+      console.log('get top product error', error.response)
+    }
+  }
+  async createProduct() {
+    try {
+      const res = await this.AxiosInstance1().post(`/products`)
+      return res
+    } catch (error) {
+      console.log('createProduct error', error.response)
     }
   }
 }

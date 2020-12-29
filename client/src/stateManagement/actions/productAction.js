@@ -24,6 +24,13 @@ import {
   GET_TOP_PRODUCT_REQUEST,
   GET_TOP_PRODUCT_SUCCESS,
   GET_TOP_PRODUCT_FAIL,
+  PRODUCT_IMAGE_UPLOAD_REQUEST,
+  PRODUCT_IMAGE_UPLOAD_SUCCESS,
+  PRODUCT_IMAGE_UPLOAD_FAIL,
+  PRODUCT_CREATE_RESET,
+  PRODUCT_CREATE_FAIL,
+  PRODUCT_CREATE_SUCCESS,
+  PRODUCT_CREATE_REQUEST,
 } from '../types/productTypes'
 const api = new Apicall()
 export const getProducts = (keyword, pageNumber) => async dispatch => {
@@ -177,4 +184,54 @@ export const getTopProduct = () => async dispatch => {
       })
     }
   } catch (error) {}
+}
+
+export const uploadImage = imageURI => async dispatch => {
+  try {
+    dispatch({ type: PRODUCT_IMAGE_UPLOAD_REQUEST })
+    const res = await api.uploadProductImage(imageURI)
+    if (res.status === 200) {
+      const {
+        data: { data },
+      } = res
+      dispatch({
+        type: PRODUCT_IMAGE_UPLOAD_SUCCESS,
+        payload: data,
+      })
+    } else {
+      dispatch({
+        type: PRODUCT_IMAGE_UPLOAD_FAIL,
+      })
+    }
+  } catch (error) {}
+}
+
+export const createProduct = () => async dispatch => {
+  try {
+    dispatch({
+      type: PRODUCT_CREATE_REQUEST,
+    })
+
+    const res = await api.createProduct()
+    const {
+      data: { data, msg },
+    } = res
+
+    if (res.status === 201) {
+      dispatch({
+        type: PRODUCT_CREATE_SUCCESS,
+        payload: data,
+      })
+    } else {
+      dispatch({
+        type: PRODUCT_CREATE_FAIL,
+        payload: msg,
+      })
+    }
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_CREATE_FAIL,
+      payload: 'msg',
+    })
+  }
 }

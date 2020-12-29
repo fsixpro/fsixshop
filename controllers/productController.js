@@ -61,16 +61,6 @@ export const getProductById = async (req, res) => {
 
 export const createProduct = async (req, res) => {
   try {
-    const {
-      name,
-      image,
-      brand,
-      category,
-      description,
-      price,
-      numReviews,
-      countInStock,
-    } = req.body
     const product = new Product({
       name: 'Sample Product',
       price: 0,

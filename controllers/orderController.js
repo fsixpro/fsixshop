@@ -1,6 +1,10 @@
+import axios from 'axios'
 import Order from '../models/OrderModel.js'
+import User from '../models/UserModel.js'
 import Utility from '../utils/Utility.js'
+import ApiCall from '../network/ApiCall.js'
 const util = new Utility()
+const api = new ApiCall()
 export const createOrder = async (req, res) => {
   try {
     const {
@@ -26,7 +30,15 @@ export const createOrder = async (req, res) => {
         shippingPrice,
         totalPrice,
       })
-
+      const { email, name } = await User.findById(req.user)
+      const {
+        data: { data },
+      } = await api.initTransaction({
+        email,
+        name,
+        amount: totalPrice * 100,
+      })
+      console.log(data)
       const createdOrder = await order.save()
 
       return util.successResponse(res, 201, createdOrder)

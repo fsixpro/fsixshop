@@ -7,13 +7,14 @@ import Message from '../components/Message'
 
 const LoginScreen = ({ location, history }) => {
   const redirect = location.search ? location.search.split('=')[1] : '/'
+
   const [email, setEmail] = useState('')
 
   const [password, setPassword] = useState('')
 
   const dispatch = useDispatch()
   const { error, loading, userInfo } = useSelector(state => state.userLogin)
-  console.log(loading)
+
   useEffect(() => {
     if (userInfo) {
       history.push(redirect)
@@ -69,7 +70,10 @@ const LoginScreen = ({ location, history }) => {
         </Form>
       </Card.Body>
       <p className='text-center mt-4'>
-        Don't have account? <Link to='/register'>Sign up</Link>
+        Don't have account?{' '}
+        <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>
+          Sign up
+        </Link>
       </p>
     </Card>
   )

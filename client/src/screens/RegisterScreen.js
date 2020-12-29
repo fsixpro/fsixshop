@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { register } from '../stateManagement/actions/userAction'
 import Message from '../components/Message'
 
-const RegisterScreen = ({ history }) => {
+const RegisterScreen = ({ history, location }) => {
+  const redirect = location.search ? location.search.split('=')[1] : '/'
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -16,7 +17,7 @@ const RegisterScreen = ({ history }) => {
   const { loading, error, userInfo } = useSelector(state => state.userLogin)
   useEffect(() => {
     if (userInfo) {
-      history.push('/login')
+      history.push(redirect)
     }
   }, [userInfo, history])
   return (
@@ -73,7 +74,10 @@ const RegisterScreen = ({ history }) => {
         </Form>
       </Card.Body>
       <p className='text-center mt-4'>
-        Already have an account? <Link to='/login'>Sign in</Link>
+        Already have an account?{' '}
+        <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
+          Sign in
+        </Link>
       </p>
     </Card>
   )

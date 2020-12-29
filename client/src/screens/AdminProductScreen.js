@@ -3,9 +3,11 @@ import AdminDashboardPanel from '../components/AdminDashboardPanel'
 import { useDispatch, useSelector } from 'react-redux'
 
 import {
+  createProduct,
   getProductsAdmin,
   productDelete,
 } from '../stateManagement/actions/productAction'
+import { PRODUCT_CREATE_RESET } from '../stateManagement/types/productTypes'
 
 const AdminProductScreen = ({ history }) => {
   const dispatch = useDispatch()
@@ -14,15 +16,26 @@ const AdminProductScreen = ({ history }) => {
   const { products } = useSelector(state => state.productListAdmin)
   const { success } = useSelector(state => state.deleteProduct)
 
+  const {
+    loading: loadingCreate,
+    error: errorCreate,
+    success: successCreate,
+    product: createdProduct,
+  } = useSelector(state => state.productCreate)
+
   useEffect(() => {
     dispatch(getProductsAdmin())
   }, [dispatch, success])
 
   useEffect(() => {
+    dispatch({ type: PRODUCT_CREATE_RESET })
     if (!userInfo || !userInfo.isAdmin) {
       history.push('/')
     }
-  }, [userInfo, history])
+    if (successCreate) {
+      history.push(`/admin/product/${createdProduct._id}/edit`)
+    }
+  }, [userInfo, history, successCreate, createdProduct])
 
   const deleteProduct = id => {
     if (
@@ -38,6 +51,10 @@ const AdminProductScreen = ({ history }) => {
     history.push(`/admin/product/${id}/edit`)
   }
 
+  const createProductHandler = () => {
+    dispatch(createProduct())
+  }
+
   return (
     <>
       <section className='section-content padding-y'>
@@ -45,7 +62,12 @@ const AdminProductScreen = ({ history }) => {
           <div className='row'>
             <AdminDashboardPanel />
             <main className='col-md-9'>
-              <button className='btn btn-success mb-3'>Create Product</button>
+              <button
+                className='btn btn-success mb-3'
+                onClick={createProductHandler}
+              >
+                Create Product
+              </button>
               <article className='card  mb-3'>
                 <table className='table table-bordered table-hover table-responsive-sm'>
                   <thead>

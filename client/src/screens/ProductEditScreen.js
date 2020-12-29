@@ -7,6 +7,7 @@ import ApiCall from '../network/ApiCall'
 import {
   getProductById,
   updateProduct,
+  uploadImage,
 } from '../stateManagement/actions/productAction'
 import { UPDATE_PRODUCT_RESET } from '../stateManagement/types/productTypes'
 const api = new ApiCall()
@@ -23,10 +24,21 @@ const ProductEditScreen = ({ match, history }) => {
   const [category, setCategory] = useState('')
   const [description, setDescription] = useState('')
   const [uploading, setUploading] = useState(false)
-  const [pictures, setPictures] = useState([])
+  const [previewSource, setPreviewSource] = useState('')
 
   const { product, loading } = useSelector(state => state.productDetails)
   const { success } = useSelector(state => state.updateProduct)
+  const {
+    success: successImage,
+    image: uploadedImage,
+    loading: loadingImage,
+  } = useSelector(state => state.productImageUpload)
+
+  useEffect(() => {
+    if (successImage) {
+      setImage(uploadedImage.public_id)
+    }
+  }, [successImage, uploadedImage])
 
   useEffect(() => {
     if (success) {
@@ -45,8 +57,9 @@ const ProductEditScreen = ({ match, history }) => {
     setCategory(product.category)
     setDescription(product.description)
   }, [dispatch, productId, product, success])
-  const updateHandler = e => {
+  const updateHandler = async e => {
     e.preventDefault()
+
     dispatch(
       updateProduct(productId, {
         name,
@@ -62,16 +75,18 @@ const ProductEditScreen = ({ match, history }) => {
   const handleBack = () => {
     history.push('/admin/products')
   }
-  const onChangeHandler = async (file, url) => {
-    console.log(url)
-    //const files = file[0].name
-    //const formData = new FormData()
-    //formData.append('image', files)
-    const res = await api.upload(url)
+  const onChangeHandler = e => {
+    const file = e.target.files[0]
+    previewFile(file)
   }
-  const onDrop = picture => {
-    setPictures([...pictures, picture])
-    console.log(pictures)
+
+  const previewFile = file => {
+    const fileReader = new FileReader()
+    fileReader.readAsDataURL(file)
+    fileReader.onload = () => {
+      setPreviewSource(fileReader.result)
+    }
+    dispatch(uploadImage(previewSource))
   }
   return loading ? (
     <Loader />
@@ -83,7 +98,7 @@ const ProductEditScreen = ({ match, history }) => {
           <Card.Title as='h4' className='text-center'>
             Edit Product
           </Card.Title>
-          <Form>
+          <Form onSubmit={updateHandler}>
             <Form.Group>
               <Form.Label>Name</Form.Label>
               <Form.Control
@@ -102,21 +117,17 @@ const ProductEditScreen = ({ match, history }) => {
             </Form.Group>
             <Form.Group>
               <Form.Label>Image</Form.Label>
-              <Form.Control
-                value={image}
-                onChange={e => setImage(e.target.value)}
-              />
-              <ImageUploader
-                singleImage={true}
-                withPreview={true}
-                onChange={onDrop}
-              />
+
               <Form.File
                 id='image-file'
                 label='choose image'
                 custom
                 onChange={onChangeHandler}
+                value={''}
               />
+              {previewSource && (
+                <img src={previewSource} alt='' width='120px' height='120px' />
+              )}
             </Form.Group>{' '}
             <Form.Group>
               <Form.Label>Brand</Form.Label>
@@ -149,7 +160,7 @@ const ProductEditScreen = ({ match, history }) => {
                 onChange={e => setDescription(e.target.value)}
               />
             </Form.Group>{' '}
-            <Button type='submit' onClick={updateHandler}>
+            <Button type='submit' disabled={loadingImage}>
               Update
             </Button>
           </Form>

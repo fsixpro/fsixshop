@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Rating from './Rating'
+import { Image } from 'cloudinary-react'
 
 const Product = ({ product }) => {
   return (
@@ -10,11 +11,13 @@ const Product = ({ product }) => {
           <div className='row no-gutters'>
             <aside className='col-md-3'>
               <aside className='img-wrap'>
-                <img
+                <Image
+                  cloudName='fsixshop'
                   width={200}
                   height={200}
                   src={product.image}
                   alt={product.name}
+                  //publicId={product.image}
                 />
               </aside>
             </aside>
