@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 
 import { PaystackButton } from 'react-paystack'
 import OrderItem from '../components/OrderItem'
+import Loader from '../components/Loader'
 import { orderDetail, orderPay } from '../stateManagement/actions/orderAction'
 import Message from '../components/Message'
 import formatDate from '../util/formateDate'
@@ -26,8 +27,9 @@ const PaymentScreen = ({ match, history }) => {
     paymentMethod,
     deliveryMethod,
     user,
+    loading,
   } = order
-  const { loading, success: successPay } = useSelector(state => state.orderPay)
+  const { success: successPay } = useSelector(state => state.orderPay)
 
   useEffect(() => {
     dispatch({ type: ORDER_PAY_RESET })
@@ -37,18 +39,14 @@ const PaymentScreen = ({ match, history }) => {
       dispatch(orderDetail(orderId))
     }
   }, [orderId, dispatch, successPay])
-  //   useEffect(() => {
-  //     if (success) {
-  //       history.push(`/order/${order._id}`)
-  //     }
-  //     // eslint-disable-next-line
-  //   }, [history, success])
+
   const onSuccessPayHandler = paymentResult => {
-    console.log(paymentResult)
     dispatch(orderPay(orderId, paymentResult))
   }
 
-  return (
+  return loading ? (
+    <Loader />
+  ) : (
     <div className='row'>
       {error ? (
         <Message>{error}</Message>
@@ -108,7 +106,7 @@ const PaymentScreen = ({ match, history }) => {
                 <div className='row'>
                   {orderItems &&
                     orderItems.map(orderItem => (
-                      <OrderItem order={orderItem} />
+                      <OrderItem key={orderItem._id} order={orderItem} />
                     ))}
                 </div>
               </div>

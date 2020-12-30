@@ -6,6 +6,9 @@ import {
   GET_ALL_USERS_FAIL,
   GET_ALL_USERS_REQUEST,
   GET_ALL_USERS_SUCCESS,
+  UPDATE_USER_FAIL,
+  UPDATE_USER_REQUEST,
+  UPDATE_USER_SUCCESS,
   USER_ERROR,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
@@ -13,6 +16,7 @@ import {
   USER_LOGOUT,
   USER_PROFILE_FAIL,
   USER_PROFILE_REQUEST,
+  UPDATE_USER_RESET,
   USER_PROFILE_SUCCESS,
   USER_REGISTER_FAIL,
   USER_REGISTER_REQUEST,
@@ -51,6 +55,7 @@ export const userProfileReducer = (state = { user: null }, action) => {
       return { ...state, loading: false, error: payload }
     case USER_ERROR:
       return { error: null }
+
     case USER_LOGOUT:
       return {}
     default:
@@ -83,6 +88,22 @@ export const deleteUserReducer = (state = {}, action) => {
       return { ...state, loading: false, error: payload }
     case DELETE_USER_RESET:
       return {}
+    default:
+      return state
+  }
+}
+
+export const updateUserReducer = (state = {}, action) => {
+  const { type, payload } = action
+  switch (type) {
+    case UPDATE_USER_REQUEST:
+      return { ...state, loading: true }
+    case UPDATE_USER_SUCCESS:
+      return { ...state, loading: false, user: payload, success: true }
+    case UPDATE_USER_FAIL:
+      return { ...state, loading: false, error: payload }
+    case UPDATE_USER_RESET:
+      return { ...state, success: false, error: null }
     default:
       return state
   }

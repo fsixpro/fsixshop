@@ -10,13 +10,14 @@ const Product = ({ product }) => {
         <article className='card card-product-list'>
           <div className='row no-gutters'>
             <aside className='col-md-3'>
-              <aside className='img-wrap'>
+              <aside className=''>
                 <Image
                   cloudName='fsixshop'
-                  width={200}
-                  height={200}
+                  // width={'auto'}
+                  // height={'auto'}
                   src={product.image}
                   alt={product.name}
+                  className='mx-auto d-block img-fluid rounded'
                   //publicId={product.image}
                 />
               </aside>
@@ -38,7 +39,7 @@ const Product = ({ product }) => {
                 <p>{product.description}</p>
               </div>
             </div>
-            <aside className='col-sm-3'>
+            <aside className='col-md-3'>
               <div className='info-aside'>
                 <div className='price-wrap'>
                   <span className='price h5'>

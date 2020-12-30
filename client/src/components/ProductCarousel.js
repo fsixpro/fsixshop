@@ -9,7 +9,7 @@ const ProductCarousel = () => {
 
   useEffect(() => {
     dispatch(getTopProduct())
-  }, [])
+  }, [dispatch])
   const { products, loading } = useSelector(state => state.productTop)
   return loading ? (
     <Loader />

@@ -12,7 +12,7 @@ import {
   DELETE_PRODUCT_FAIL,
   UPDATE_PRODUCT_REQUEST,
   UPDATE_PRODUCT_SUCCESS,
-  UPDATE_PRODUCT_RESET,
+  // UPDATE_PRODUCT_RESET,
   UPDATE_PRODUCT_FAIL,
   PRODUCT_DETAILS_RESET,
   PRODUCT_LIST_ADMIN_REQUEST,
@@ -27,7 +27,7 @@ import {
   PRODUCT_IMAGE_UPLOAD_REQUEST,
   PRODUCT_IMAGE_UPLOAD_SUCCESS,
   PRODUCT_IMAGE_UPLOAD_FAIL,
-  PRODUCT_CREATE_RESET,
+  //PRODUCT_CREATE_RESET,
   PRODUCT_CREATE_FAIL,
   PRODUCT_CREATE_SUCCESS,
   PRODUCT_CREATE_REQUEST,
@@ -148,10 +148,7 @@ export const createProductReview = (id, data) => async dispatch => {
     })
     const res = await api.createProductReview(id, data)
     const {
-      data: {
-        msg,
-        data: { msg: msgserver },
-      },
+      data: { msg },
     } = res
     if (res.status === 201) {
       dispatch({

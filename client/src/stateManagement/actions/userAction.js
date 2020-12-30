@@ -7,6 +7,10 @@ import {
   GET_ALL_USERS_FAIL,
   GET_ALL_USERS_REQUEST,
   GET_ALL_USERS_SUCCESS,
+  UPDATE_USER_FAIL,
+  UPDATE_USER_REQUEST,
+  UPDATE_USER_RESET,
+  UPDATE_USER_SUCCESS,
   USER_ERROR,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
@@ -72,6 +76,43 @@ export const login = (email, password) => async dispatch => {
       setTimeout(() => {
         dispatch({
           type: USER_ERROR,
+        })
+      }, 2500)
+    }
+  } catch (error) {
+    console.log(error.response)
+  }
+}
+
+export const updateUser = (name, email, password) => async dispatch => {
+  try {
+    dispatch({
+      type: UPDATE_USER_REQUEST,
+    })
+    const res = await api.updateUser({ name, email, password })
+
+    const {
+      data: { data, msg },
+    } = res
+    console.log(res)
+    if (res.status === 200) {
+      dispatch({
+        type: UPDATE_USER_SUCCESS,
+        payload: data,
+      })
+      setTimeout(() => {
+        dispatch({
+          type: UPDATE_USER_RESET,
+        })
+      }, 1000)
+    } else {
+      dispatch({
+        type: UPDATE_USER_FAIL,
+        payload: msg,
+      })
+      setTimeout(() => {
+        dispatch({
+          type: UPDATE_USER_RESET,
         })
       }, 2500)
     }

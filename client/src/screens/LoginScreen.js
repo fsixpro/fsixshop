@@ -61,7 +61,7 @@ const LoginScreen = ({ location, history }) => {
               className='btn btn-success btn-block'
             >
               {loading ? (
-                <span class='spinner-border spinner-border-sm'></span>
+                <span className='spinner-border spinner-border-sm'></span>
               ) : (
                 'Login'
               )}

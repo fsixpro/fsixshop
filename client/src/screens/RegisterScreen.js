@@ -19,7 +19,7 @@ const RegisterScreen = ({ history, location }) => {
     if (userInfo) {
       history.push(redirect)
     }
-  }, [userInfo, history])
+  }, [userInfo, history, redirect])
   return (
     <Card className='mx-auto centre'>
       {error && (

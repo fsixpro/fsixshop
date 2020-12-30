@@ -76,6 +76,15 @@ export default class Apicall {
     }
   }
 
+  async updateUser(params) {
+    try {
+      const res = await this.AxiosInstance1().put('/user/profile', params)
+      return res
+    } catch (error) {
+      console.log('upadete user error', error)
+    }
+  }
+
   async register(params) {
     try {
       const res = await this.AxiosInstance().post('/user/register', params)

@@ -107,29 +107,24 @@ export const userProfile = async (req, res) => {
 export const updateProfile = async (req, res) => {
   try {
     const { name, email, password } = req.body
+    if (password === undefined || password === '')
+      return util.failureResponse(res, 400, 'input password')
     const user = await User.findById(req.user)
     if (user) {
+      const matchPass = await bcrypt.compare(password, user.password)
+      if (!matchPass) {
+        return util.failureResponse(res, 400, 'incorrect password')
+      }
       user.name = name || user.name
       user.email = email || user.email
-      if (password && password !== '') {
-        const salt = await bcrypt.genSalt(10)
-        user.password = await bcrypt.hash(password, salt)
-      } else {
-        user.password = user.password
-      }
-      await user.save()
-      const payload = {
-        id: user.id,
-      }
 
-      const token = jwt.sign(payload, process.env.JWT_SECRET)
+      await user.save()
 
       return util.successResponse(res, 200, {
         id: user.id,
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
-        token,
       })
     }
   } catch (error) {

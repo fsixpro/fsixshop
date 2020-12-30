@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getUserProfile } from '../stateManagement/actions/userAction'
 import { Link } from 'react-router-dom'
 import { getMyOrders } from '../stateManagement/actions/orderAction'
-import formatDate from '../util/formateDate'
 
 const ProfileScreen = ({ history }) => {
   const dispatch = useDispatch()
@@ -12,7 +11,7 @@ const ProfileScreen = ({ history }) => {
   useEffect(() => {
     dispatch(getMyOrders())
   }, [dispatch])
-  const { myOrders, loading } = useSelector(state => state.myOrderList)
+  const { myOrders } = useSelector(state => state.myOrderList)
   const { userInfo } = useSelector(state => state.userLogin)
 
   const { user } = useSelector(state => state.userProfile)

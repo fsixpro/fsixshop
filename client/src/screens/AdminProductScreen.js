@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import AdminDashboardPanel from '../components/AdminDashboardPanel'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -18,7 +18,6 @@ const AdminProductScreen = ({ history }) => {
 
   const {
     loading: loadingCreate,
-    error: errorCreate,
     success: successCreate,
     product: createdProduct,
   } = useSelector(state => state.productCreate)
@@ -35,7 +34,7 @@ const AdminProductScreen = ({ history }) => {
     if (successCreate) {
       history.push(`/admin/product/${createdProduct._id}/edit`)
     }
-  }, [userInfo, history, successCreate, createdProduct])
+  }, [dispatch, userInfo, history, successCreate, createdProduct])
 
   const deleteProduct = id => {
     if (
@@ -63,6 +62,7 @@ const AdminProductScreen = ({ history }) => {
             <AdminDashboardPanel />
             <main className='col-md-9'>
               <button
+                disabled={loadingCreate}
                 className='btn btn-success mb-3'
                 onClick={createProductHandler}
               >

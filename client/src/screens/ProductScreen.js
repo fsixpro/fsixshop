@@ -50,7 +50,11 @@ const ProductScreen = ({ match, history }) => {
           <aside className='col-md-6'>
             <article className='gallery-wrap'>
               <div className='img-big-wrap'>
-                <img src={product.image} alt={product.name} />
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className='mx-auto d-block img-fluid'
+                />
               </div>
               <div className='thumbs-wrap'>
                 <div className='item-thumb'>

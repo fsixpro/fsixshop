@@ -1,14 +1,7 @@
 import React, { useEffect } from 'react'
 import AdminDashboardPanel from '../components/AdminDashboardPanel'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  getUserProfile,
-  getusers,
-  userDelete,
-} from '../stateManagement/actions/userAction'
-import { Link } from 'react-router-dom'
-import { getMyOrders } from '../stateManagement/actions/orderAction'
-import formatDate from '../util/formateDate'
+import { getusers, userDelete } from '../stateManagement/actions/userAction'
 
 const UsersScreen = ({ history }) => {
   const dispatch = useDispatch()

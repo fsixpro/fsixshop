@@ -19,7 +19,10 @@ const Paginate = ({ pages, pageNumber, keyword = '' }) => {
           </Link>
         </li>
         {[...Array(pages).keys()].map(key => (
-          <li className={`page-item ${key + 1 === pageNumber && 'active'}`}>
+          <li
+            key={key}
+            className={`page-item ${key + 1 === pageNumber && 'active'}`}
+          >
             <Link
               className='page-link'
               to={

@@ -19,7 +19,7 @@ const Header = () => {
     if (!userInfo) {
       history.push('/')
     }
-  }, [])
+  }, [userInfo, history])
   return (
     <header>
       <Navbar bg='primary' variant='dark' expand='lg' collapseOnSelect>

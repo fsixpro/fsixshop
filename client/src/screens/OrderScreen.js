@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-//import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import DashboardPanel from '../components/DashboardPanel'
 import Message from '../components/Message'
 import { getMyOrders } from '../stateManagement/actions/orderAction'
@@ -11,7 +11,7 @@ const OrderScreen = () => {
   useEffect(() => {
     dispatch(getMyOrders())
   }, [dispatch])
-  const { myOrders, loading } = useSelector(state => state.myOrderList)
+  const { myOrders } = useSelector(state => state.myOrderList)
 
   return (
     <section className='section-content padding-y'>
@@ -20,8 +20,8 @@ const OrderScreen = () => {
           <DashboardPanel />
           <main className='col-md-9'>
             {myOrders.length > 0 ? (
-              myOrders.map(myOrder => (
-                <article className='card order-item mb-4'>
+              myOrders.map((myOrder, index) => (
+                <article key={index} className='card order-item mb-4'>
                   <header className='card-header'>
                     <strong className='d-inline-block mr-3'>
                       Order ID: {myOrder._id}
@@ -32,39 +32,59 @@ const OrderScreen = () => {
                     <div className='row'>
                       <div className='col-md-8'>
                         <h6 className='text-muted'>Delivery to</h6>
-                        <p>
-                          {myOrder.user.name}
-                          <br />
-                          Email: {myOrder.user.email} <br />
-                          Location:
-                          {` ${myOrder.shippingAddress.address}, ${myOrder.shippingAddress.state}, ${myOrder.shippingAddress.country}`}{' '}
-                        </p>
+                        {myOrder.isDelivered ? (
+                          <p>
+                            {myOrder.user.name}
+                            <br />
+                            Email: {myOrder.user.email} <br />
+                            Location:
+                            {` ${myOrder.shippingAddress.address}, ${myOrder.shippingAddress.state}, ${myOrder.shippingAddress.country}`}{' '}
+                          </p>
+                        ) : (
+                          <Message variant='danger'>Not yet Delivered</Message>
+                        )}
                       </div>
                       <div className='col-md-4'>
                         <h6 className='text-muted'>Payment</h6>
-                        <span className='text-success'>
-                          <i className='fab fa-lg fa-cc-visa'></i>
-                          Visa **** 4216
-                        </span>
-                        <p>
-                          Subtotal: <span>&#8358;</span>
-                          {myOrder.totalPrice} <br />
-                          Shipping: <span>&#8358;</span>
-                          {myOrder.shippingPrice} <br />
-                          <span className='b'>
-                            Total Price:
-                            <span>&#8358;</span>
-                            {myOrder.totalPrice + myOrder.shippingPrice}{' '}
-                          </span>
-                        </p>
+                        {myOrder.isPaid ? (
+                          <>
+                            {' '}
+                            <span className='text-success'>
+                              <i className='fab fa-lg fa-cc-visa'></i>
+                              Visa **** 4216
+                            </span>
+                            <p>
+                              Subtotal: <span>&#8358;</span>
+                              {myOrder.totalPrice} <br />
+                              Shipping: <span>&#8358;</span>
+                              {myOrder.shippingPrice} <br />
+                              <span className='b'>
+                                Total Price:
+                                <span>&#8358;</span>
+                                {myOrder.totalPrice +
+                                  myOrder.shippingPrice}{' '}
+                              </span>
+                            </p>
+                          </>
+                        ) : (
+                          <>
+                            <Message variant='danger'>Not Paid</Message>
+                            <Link
+                              className='btn btn-primary'
+                              to={`/order/${myOrder._id}`}
+                            >
+                              Make Payment
+                            </Link>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
                   <div className='table-responsive'>
                     <table className='table table-hover'>
                       <tbody>
-                        {myOrder.orderItems.map(orderItem => (
-                          <tr>
+                        {myOrder.orderItems.map((orderItem, index) => (
+                          <tr key={index}>
                             <td width='65'>
                               <img
                                 src={orderItem.image}

@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
-import ImageUploader from 'react-images-upload'
+import { Button, Card, Container, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
-import ApiCall from '../network/ApiCall'
 import {
   getProductById,
   updateProduct,
   uploadImage,
 } from '../stateManagement/actions/productAction'
 import { UPDATE_PRODUCT_RESET } from '../stateManagement/types/productTypes'
-const api = new ApiCall()
+
 const ProductEditScreen = ({ match, history }) => {
   const productId = match.params.id
 
@@ -23,7 +21,7 @@ const ProductEditScreen = ({ match, history }) => {
   const [countInStock, setCountInStock] = useState(0)
   const [category, setCategory] = useState('')
   const [description, setDescription] = useState('')
-  const [uploading, setUploading] = useState(false)
+
   const [previewSource, setPreviewSource] = useState('')
 
   const { product, loading } = useSelector(state => state.productDetails)
@@ -56,7 +54,7 @@ const ProductEditScreen = ({ match, history }) => {
     setCountInStock(product.countInStock)
     setCategory(product.category)
     setDescription(product.description)
-  }, [dispatch, productId, product, success])
+  }, [dispatch, productId, product, success, history])
   const updateHandler = async e => {
     e.preventDefault()
 
